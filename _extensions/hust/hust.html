@@ -1,0 +1,190 @@
+<!-- HUST modern slides: eyebrow (current section), status pills, TOC cards, section pages with preview, end slide, minimal footer, touch buttons, PDF links -->
+<script>
+(function () {
+  function ready(fn) {
+    if (window.Reveal && Reveal.isReady && Reveal.isReady()) fn();
+    else if (window.Reveal) Reveal.on('ready', fn);
+    else document.addEventListener('DOMContentLoaded', function () { Reveal.on('ready', fn); });
+  }
+
+  ready(function () {
+    var A = '_extensions/hust/assets/';
+    var slidesRoot = document.querySelector('.reveal .slides');
+    var printing = document.documentElement.classList.contains('print-pdf') || /print-pdf/.test(location.search);
+    var meta = function (n) { var m = document.querySelector('meta[name="' + n + '"]'); return m ? m.content : ''; };
+    var authors = Array.prototype.map.call(document.querySelectorAll('meta[name="author"]'), function (m) { return m.content; }).join('，');
+    var date = meta('dcterms.date');
+    var cover = slidesRoot.querySelector('section.hust-cover');
+    var allSlides = Reveal.getSlides();
+    var total = allSlides.length;
+    allSlides.forEach(function (s, i) { if (!s.id) s.id = 'p' + (i + 1); });   // PDF 内部链接需要 id
+
+    // assets: taken from the hidden <img> list on the cover, so they work when embedded as data URIs
+    function asset(k, file) {
+      var im = document.querySelector('.hust-assets img[data-k="' + k + '"]');
+      return (im && im.getAttribute('src')) || A + file;
+    }
+    function bg(el, k, file) { el.style.backgroundImage = 'url("' + asset(k, file) + '")'; }
+    function pad2(i) { return (i < 9 ? '0' : '') + (i + 1); }
+    function clean(t) { return t.replace(/^[一二三四五六七八九十]+[、.\s]*/, '').trim(); }
+    function goSlide(el) { var ix = Reveal.getIndices(el); Reveal.slide(ix.h, ix.v); }
+    // 链接：屏幕上点击跳转；PDF 中为原生锚点（Chromium 导出为 PDF 内部跳转）
+    function link(target, cls) {
+      var a = document.createElement('a'); a.href = '#' + target.id; if (cls) a.className = cls;
+      if (!printing) a.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); goSlide(target); });
+      return a;
+    }
+
+    // ---- sections (# level-1) ----
+    var sections = Array.prototype.slice.call(slidesRoot.querySelectorAll('section.slide.level1')).map(function (s, i) {
+      var h = s.querySelector('h1');
+      return { el: s, title: h ? clean(h.textContent) : ('Part ' + (i + 1)) };
+    });
+    function sectionOf(slide) {
+      var cur = -1;
+      sections.forEach(function (s, i) {
+        if (s.el === slide || (s.el.compareDocumentPosition(slide) & Node.DOCUMENT_POSITION_FOLLOWING)) cur = i;
+      });
+      return cur;
+    }
+
+    // ---- end slide (## 谢谢 {.end}) ----
+    slidesRoot.querySelectorAll('section.slide.end').forEach(function (s) {
+      var ph = s.querySelector('img.end-photo-src');
+      s.classList.add(ph ? 'has-photo' : 'no-photo');
+      if (ph) { var shade = document.createElement('div'); shade.className = 'end-shade'; ph.after(shade); }
+      else { var pat = document.createElement('div'); pat.className = 'end-pattern'; bg(pat, 'pattern', 'hust-pattern.png'); s.insertBefore(pat, s.firstChild); }
+      var em = document.createElement('img'); em.className = 'end-emblem no-frame'; em.alt = '';
+      em.src = ph ? asset('emblem-white', 'hust-emblem-white.svg') : asset('emblem-color', 'hust-emblem-color.svg');
+      s.appendChild(em);
+    });
+
+    // ---- content slides: eyebrow + status pill ----
+    var STATUS = { '✅': ['done', '已完成'], '⏳': ['running', '进行中'], '📋': ['todo', '待补'] };
+    slidesRoot.querySelectorAll('section.slide.level2').forEach(function (s) {
+      s.querySelectorAll('h2 .status').forEach(function (st) {
+        var key = Object.keys(STATUS).find(function (k) { return st.textContent.indexOf(k) >= 0; });
+        if (key) { st.classList.add(STATUS[key][0]); st.textContent = STATUS[key][1]; }
+      });
+      if (s.classList.contains('end')) return;
+      var cur = sectionOf(s);
+      var eb = document.createElement('div'); eb.className = 'hust-eyebrow';
+      if (s.classList.contains('toc')) eb.textContent = 'CONTENTS · 目录';
+      else if (cur >= 0) eb.innerHTML = '<span class="num">' + pad2(cur) + '</span><span>' + sections[cur].title + '</span>';
+      else eb.textContent = (cover && cover.getAttribute('data-short-title')) || document.title;
+      s.insertBefore(eb, s.firstChild);
+    });
+
+    // ---- section pages: left blue strip (number, emblem, optional photo) + right title and preview of this section ----
+    sections.forEach(function (s, i) {
+      var el = s.el, h = el.querySelector('h1'); if (h) h.textContent = s.title;
+      var strip = document.createElement('div'); strip.className = 'sec-strip';
+      var ph = el.querySelector('img.sec-photo-src');
+      if (ph) {
+        el.classList.add('has-photo');
+        strip.style.backgroundImage = 'linear-gradient(180deg, rgba(0,45,82,0.55) 0%, rgba(0,45,82,0.25) 40%, rgba(0,45,82,0.82) 100%), url("' + ph.getAttribute('src') + '")';
+      } else {
+        var pat = document.createElement('div'); pat.className = 'sec-pattern'; bg(pat, 'pattern', 'hust-pattern.png'); strip.appendChild(pat);
+      }
+      el.insertBefore(strip, el.firstChild);
+      var num = document.createElement('div'); num.className = 'sec-num'; num.textContent = pad2(i);
+      var em = document.createElement('img'); em.className = 'sec-emblem no-frame'; em.src = asset('emblem-color', 'hust-emblem-color.svg'); em.alt = '';   // 彩色校徽放右上浅底，不压在蓝条上
+      var mt = document.createElement('img'); mt.className = 'sec-mountain no-frame'; mt.src = asset('mountain', 'hust-mountain.svg'); mt.alt = '';
+      el.appendChild(num); el.appendChild(em); el.appendChild(mt);
+
+      // 本节内容：自动收集本节下的 ## 页标题（不含结尾页）
+      var ul = document.createElement('ul'); ul.className = 'sec-preview'; var k = 0;
+      var idx = allSlides.indexOf(el);
+      for (var j = idx + 1; j < total && !allSlides[j].classList.contains('level1'); j++) {
+        var sj = allSlides[j], h2 = sj.querySelector('h2');
+        if (!h2 || sj.classList.contains('end')) continue;
+        var st = h2.querySelector('.status');
+        var title = Array.prototype.filter.call(h2.childNodes, function (n) { return !(n.classList && n.classList.contains('status')); })
+          .map(function (n) { return n.textContent; }).join('').trim();
+        var li = document.createElement('li'), a = link(sj);
+        a.innerHTML = '<span class="k">' + pad2(k++) + '</span><span class="t"></span>' + (st ? '<span class="st">' + st.textContent + '</span>' : '');
+        a.querySelector('.t').textContent = title;
+        li.appendChild(a); ul.appendChild(li);
+      }
+      if (k) {
+        var label = document.createElement('div'); label.className = 'sec-preview-label'; label.textContent = '本节内容';
+        el.appendChild(label); el.appendChild(ul);
+        if (k > 4) el.classList.add('sec-dense');   // 节内页多时用紧凑排版
+      }
+    });
+
+    // ---- TOC slide (## 目录 {.toc}): numbered cards, each a link to its section ----
+    var tocSlide = slidesRoot.querySelector('section.slide.toc');
+    if (tocSlide) {
+      var ul = document.createElement('ul'); ul.className = 'hust-toc';
+      sections.forEach(function (s, i) {
+        var li = document.createElement('li'), a = link(s.el);
+        a.innerHTML = '<span class="num">' + pad2(i) + '</span><span class="t"></span>';
+        a.querySelector('.t').textContent = s.title;
+        li.appendChild(a); ul.appendChild(li);
+      });
+      tocSlide.appendChild(ul);
+    }
+
+    // ---- footer: "author · date" left, page right; one per slide when printing ----
+    function makeFooter() {
+      var f = document.createElement('div'); f.className = 'hust-footer';
+      f.innerHTML = '<div class="f-left"></div><div class="f-right"></div>';
+      return f;
+    }
+    function fillFooter(f, slide, n) {
+      f.querySelector('.f-left').textContent = [authors, date].filter(Boolean).join(' · ');
+      f.querySelector('.f-right').textContent = n + ' / ' + total;
+      f.classList.toggle('dark', !!(slide && slide.classList.contains('level1')));
+    }
+    function noFooter(s) { return s && (s.classList.contains('hust-cover') || s.classList.contains('end')); }
+    if (printing) {
+      allSlides.forEach(function (s, i) {
+        if (noFooter(s)) return;
+        var f = makeFooter(); f.classList.add('inline'); fillFooter(f, s, i + 1); s.appendChild(f);
+      });
+    } else {
+      var foot = makeFooter(); document.body.appendChild(foot);
+      var update = function () {
+        var slide = Reveal.getCurrentSlide();
+        foot.classList.toggle('hidden', noFooter(slide));
+        fillFooter(foot, slide, allSlides.indexOf(slide) + 1);
+      };
+      Reveal.on('slidechanged', update); update();
+    }
+
+    // ---- page buttons: first / prev / TOC / next ----
+    var icon = {
+      first: '<svg viewBox="0 0 24 24"><path d="M6 5v14M18 6l-8 6 8 6z"/></svg>',
+      prev: '<svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>',
+      toc: '<svg viewBox="0 0 24 24"><path d="M5 7h14M5 12h14M5 17h14"/></svg>',
+      next: '<svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg>'
+    };
+    if (printing) {
+      // PDF：每页右下角一组原生内部链接
+      var tocT = tocSlide || allSlides[Math.min(1, total - 1)];
+      allSlides.forEach(function (s, i) {
+        if (s.classList.contains('hust-cover')) return;
+        var nav = document.createElement('div'); nav.className = 'pdf-nav';
+        [['first', allSlides[0]], ['prev', allSlides[Math.max(0, i - 1)]], ['toc', tocT], ['next', allSlides[Math.min(total - 1, i + 1)]]]
+          .forEach(function (b) { var a = link(b[1], b[0]); a.innerHTML = icon[b[0]]; nav.appendChild(a); });
+        s.appendChild(nav);
+      });
+    } else {
+      // 屏幕：常驻右下角的触屏按钮
+      var nav = document.createElement('div'); nav.className = 'hust-nav';
+      [['first', '首页', function () { Reveal.slide(0, 0); }],
+       ['prev', '上一页', function () { Reveal.prev(); }],
+       ['toc', '目录', function () { if (tocSlide) goSlide(tocSlide); else Reveal.toggleOverview(); }],
+       ['next', '下一页', function () { Reveal.next(); }]].forEach(function (b) {
+        var btn = document.createElement('button'); btn.className = b[0]; btn.title = b[1]; btn.setAttribute('aria-label', b[1]);
+        btn.innerHTML = icon[b[0]];
+        btn.addEventListener('click', function (e) { e.stopPropagation(); b[2](); });
+        nav.appendChild(btn);
+      });
+      document.body.appendChild(nav);
+    }
+    Reveal.layout();
+  });
+})();
+</script>

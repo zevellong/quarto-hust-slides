@@ -1,0 +1,29 @@
+# ============================================================
+# 幻灯片配置：每个项目改一次（qmd 头部写 metadata-files: [config.yml] 引用）
+# qmd 头部写了同名项时，以 qmd 为准（例如答辩日期）
+# ============================================================
+
+# ---- 个人信息（封面与页脚）----
+author: "汇报人"
+institute: "华中科技大学"
+
+# ---- 日期 ----
+date: today                # today = 渲染当天；答辩等固定日期请在 qmd 头部写 date: 2026-11-05
+date-format: "YYYY-MM-DD"
+
+# ---- 照片（编号见模板 photos/索引.jpg）----
+hust:
+  photos: true             # true = 图片模式（默认）；false = 无图模式（封面山水底纹、白底结尾页）
+  cover-photo: 11          # 封面右侧：011 南大门鸟瞰
+  section-photo: none      # 分节页左侧窄条：none = 华科蓝窄条（默认，更庄重）；竖幅 22 校大门秋最合适
+  end-photo: 13            # 结尾页（## 谢谢 {.end}）：013 喻家湖上红嘴鸥
+  # 每项可写：编号 / none / random（全部照片中随机）/ 列表 [22, 25, 29, 36]（其中随机）
+  # photo-order: cycle     # 列表按顺序轮换（默认 random：打乱后轮换，尽量不重复）
+  # photo-seed: 7          # 固定随机结果（不写则每次渲染不同）
+  # 单个分节覆盖：# 标题 {photo="36"} 或 {photo="none"}
+
+  # ---- 结尾页右上角分享卡片（可选）：模板仓库、网盘分享链接、项目主页……----
+  end-link: https://github.com/zevellong/quarto-hust-slides     # 网址（HTML / PDF 中可点击）
+  end-link-label: 使用此模板                                    # 卡片标题（默认“扫码访问”；如“PPT 下载（提取码 abcd）”）
+  # 分享图：把二维码图片命名为 share_enable.png 放在幻灯片目录或 fig/，存在即显示，删掉即不显示
+  #   （Chrome：地址栏右侧“分享” → 创建二维码 → 下载）

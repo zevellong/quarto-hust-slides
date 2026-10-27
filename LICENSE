@@ -1,0 +1,27 @@
+MIT License
+
+Copyright (c) 2026 quarto-hust-slides contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+本许可仅适用于代码（Lua、SCSS、HTML 模板、脚本）。
+_extensions/hust/assets/ 中的校徽、校名、辅助图形版权归华中科技大学所有（来源 https://vi.hust.edu.cn/），
+校园照片版权归原作者 / 华中科技大学所有（来源 https://www.hust.edu.cn/zjhkd/xyfg/qb.htm，仓库不附带），
+仅限校内学术交流使用，须遵守学校视觉形象识别系统规范。

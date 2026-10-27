@@ -1,0 +1,41 @@
+<section id="title-slide" class="hust-cover$if(hust-cover-photo)$ has-photo$else$ no-photo$endif$"$for(title-slide-attributes/pairs)$ $it.key$="$it.value$"$endfor$>
+$if(hust-cover-photo)$
+  <img class="cover-photo no-frame" src="$hust-cover-photo$" alt="" aria-hidden="true">
+  <div class="cover-photo-fade"></div>
+$if(hust-cover-credit)$
+  <div class="photo-credit cover-credit">摄影：$hust-cover-credit$</div>
+$endif$
+$endif$
+  <div class="cover-brand">
+    <img class="cover-emblem no-frame" src="_extensions/hust/assets/hust-emblem-color.svg" alt="华中科技大学校徽">
+    <div class="cover-names">
+      <img class="cover-name-cn no-frame" src="_extensions/hust/assets/hust-name-cn-blue.svg" alt="华中科技大学">
+      <img class="cover-name-en no-frame" src="_extensions/hust/assets/hust-name-en-blue.svg" alt="Huazhong University of Science and Technology">
+    </div>
+  </div>
+  <div class="cover-text">
+$if(subtitle)$
+    <div class="cover-eyebrow">$subtitle$</div>
+$endif$
+    <h1 class="title">$title$</h1>
+    <div class="cover-rule"><span></span><span></span></div>
+    <div class="cover-meta">
+$for(by-author)$
+      <div class="author">$it.name.literal$</div>
+$endfor$
+$if(institute)$
+      <div class="institute">$institute$</div>
+$endif$
+$if(date)$
+      <div class="date">$date$</div>
+$endif$
+    </div>
+  </div>
+  <!-- 隐藏的素材登记：embed-resources 时会被内嵌为 data URI，脚本从这里取图（单个 HTML 也能显示） -->
+  <div class="hust-assets" aria-hidden="true">
+    <img data-k="emblem-color" src="_extensions/hust/assets/hust-emblem-color.svg" alt="">
+    <img data-k="emblem-white" src="_extensions/hust/assets/hust-emblem-white.svg" alt="">
+    <img data-k="pattern" src="_extensions/hust/assets/hust-pattern.png" alt="">
+    <img data-k="mountain" src="_extensions/hust/assets/hust-mountain.svg" alt="">
+  </div>
+</section>

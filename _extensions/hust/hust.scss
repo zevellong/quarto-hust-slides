@@ -1,0 +1,325 @@
+/*-- scss:defaults --*/
+// ============================================================================
+// HUST modern slides · 配色与字体变量（改这里即可换风格）
+// 华中科技大学视觉标识 A-3-1：华科蓝 #004B84、华科红 #D20B17、深空灰 #575757
+// 原则：浅灰画布 + 白色卡片；华科蓝只作结构色，华科红只作点缀
+// ============================================================================
+$hust-blue: #004B84;
+$hust-blue-dark: #002D52;
+$hust-blue-soft: #EBF3FA;
+$hust-red: #D20B17;
+$hust-gold: #D5AF77;
+$canvas: #F4F6F9;          // 画布：冷灰纸张色
+$card: #FFFFFF;
+$ink: #0F172A;             // 主文字
+$ink-2: #475569;           // 次要文字
+$ink-3: #94A3B8;           // 辅助小字
+$line: #E2E8F0;            // 1px 细线
+$shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04), 0 8px 24px -6px rgba(0, 75, 132, 0.08);
+
+$font-family-sans-serif: "HarmonyOS Sans SC", "PingFang SC", "Source Han Sans SC", "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+$presentation-font-size-root: 26px;
+$presentation-heading-font: $font-family-sans-serif;
+$presentation-heading-color: $ink;
+$presentation-heading-font-weight: 800;
+$body-bg: $canvas;
+$backgroundColor: $canvas;
+$body-color: $ink;
+$link-color: $hust-blue;
+$presentation-h1-font-size: 2.2em;
+$presentation-h2-font-size: 1.35em;
+$code-block-font-size: 0.6em;
+
+/*-- scss:rules --*/
+$pad-x: 64px;
+$pad-top: 40px;
+$foot-h: 40px;
+
+.reveal { -webkit-font-smoothing: antialiased; }
+.reveal-viewport, .reveal .slide-background { background: $canvas; }
+.hust-assets { display: none !important; }
+
+// 所有页固定整页高度（打印模式会把每页包进 .pdf-page，选择器不依赖层级）
+.reveal .slides section.slide, .reveal .slides section.hust-cover { height: 900px !important; min-height: 900px !important; top: 0 !important; }
+.print-pdf .reveal .slides .pdf-page > section { height: 900px !important; min-height: 900px !important; top: 0 !important; }
+
+// ---------------------------------------------------------------------------
+// 内容页：眉题（当前节）+ 主标题 + 状态胶囊
+// ---------------------------------------------------------------------------
+.reveal .slides section.slide.level2 {
+  padding: ($pad-top + 34px) $pad-x ($foot-h + 18px) $pad-x !important;
+  box-sizing: border-box;
+  text-align: left;
+}
+.reveal .hust-eyebrow {
+  position: absolute; top: $pad-top; left: $pad-x; right: $pad-x;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 15px; font-weight: 700; letter-spacing: 0.06em; color: $hust-blue;
+  &::before { content: ""; width: 4px; height: 18px; border-radius: 2px; background: $hust-red; }
+  .num { color: $hust-red; }
+}
+.reveal .slides section.slide.level2 > h2:first-child {
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  margin: 0 0 22px 0; padding: 0 0 14px 0;
+  font-size: 36px; font-weight: 800; letter-spacing: -0.01em; line-height: 1.25; color: $ink;
+  border-bottom: 1px solid $line;
+}
+// 状态胶囊：标题里的 [✅]{.status} 由脚本转成文字标签
+.reveal h2 .status {
+  flex: 0 0 auto; font-size: 15px; font-weight: 600; letter-spacing: 0.02em;
+  padding: 4px 14px; border-radius: 999px; border: 1px solid $line; background: $card; color: $ink-2;
+  &.done { background: #ECFDF3; border-color: #ABEFC6; color: #067647; }
+  &.running { background: #FFFAEB; border-color: #FEDF89; color: #B54708; }
+  &.todo { background: #F2F4F7; border-color: #D0D5DD; color: #475467; }
+}
+
+// ---------------------------------------------------------------------------
+// 正文元素
+// ---------------------------------------------------------------------------
+.reveal p, .reveal li { color: $ink-2; }
+.reveal strong { color: $ink; font-weight: 700; }
+.reveal ul { margin-left: 0.2em; }
+.reveal li { margin-bottom: 0.45em; line-height: 1.5; }
+.reveal ul li::marker { color: $hust-blue; }
+.reveal .hl { color: $hust-red; font-weight: 700; }      // 关键数字：[提升 12%]{.hl}
+
+// 要点卡片：白底圆角 + 方块列表符号 + 行间细虚线
+.reveal .points, .reveal .card {
+  background: $card; border: 1px solid $line; border-radius: 14px; box-shadow: $shadow-card;
+  padding: 22px 28px; box-sizing: border-box;
+}
+.reveal .points ul { list-style: none; margin: 0; padding: 0; }
+.reveal .points ul li {
+  position: relative; margin: 0; padding: 11px 0 11px 22px; font-size: 22px; line-height: 1.5;
+  border-bottom: 1px dashed $line;
+  &:first-child { padding-top: 0; }
+  &:last-child { border-bottom: none; padding-bottom: 0; }
+  &::before { content: ""; position: absolute; left: 0; top: 22px; width: 7px; height: 7px; border-radius: 2px; background: $hust-blue; }
+  &:first-child::before { top: 11px; }
+}
+.reveal .columns { display: flex; gap: 28px; align-items: flex-start; }
+.reveal .columns > .column { box-sizing: border-box; }
+// 上图下文时两栏要点各自成卡
+.reveal .columns.points { background: none; border: none; box-shadow: none; padding: 0; gap: 24px; align-items: stretch; }
+.reveal .columns.points > .column {
+  background: $card; border: 1px solid $line; border-radius: 14px; box-shadow: $shadow-card; padding: 18px 24px;
+}
+
+// 指标卡（KPI）：::: {.stats} 内放若干 ::: {.stat} [8]{.num} 说明 :::
+.reveal .stats { display: flex; gap: 18px; margin: 0 0 18px 0; }
+.reveal .stat {
+  flex: 1 1 0; background: $card; border: 1px solid $line; border-radius: 14px; box-shadow: $shadow-card;
+  padding: 18px 22px; font-size: 17px; color: $ink-3; line-height: 1.35;
+  p { margin: 0; color: $ink-3; }
+  .num { display: block; font-size: 46px; font-weight: 800; letter-spacing: -0.02em; color: $hust-blue; line-height: 1.1; margin-bottom: 4px; }
+  &.red .num { color: $hust-red; }
+}
+
+// 图：白色画框 + 圆角 + 弥散阴影；横纵比始终保持
+.reveal .slides img { object-fit: contain; max-width: 100%; image-rendering: high-quality; image-rendering: -webkit-optimize-contrast; }
+.reveal .slides { will-change: auto !important; }   // 避免整个画布被缓存成低分辨率纹理（HTML 中位图发虚）
+.reveal .slides section img:not([width]) { width: auto; }
+.reveal .slides section.slide.level2 img:not(.no-frame) {
+  background: $card; padding: 12px; border-radius: 14px; border: 1px solid $line; box-shadow: $shadow-card; box-sizing: border-box;
+}
+
+// 表格：三线表放在白色卡片上
+.reveal table {
+  background: $card; border-collapse: collapse; border-radius: 12px; overflow: hidden;
+  border: 1px solid $line; box-shadow: $shadow-card; font-size: 18px; margin: 0 0 16px 0;
+}
+.reveal table th { background: $hust-blue-soft; color: $hust-blue; font-weight: 700; border-bottom: 2px solid $hust-blue !important; padding: 10px 14px; }
+.reveal table td { color: $ink-2; border-bottom: 1px solid #F1F5F9 !important; padding: 9px 14px; }
+.reveal table tr:last-child td { border-bottom: none !important; }
+
+// 提示框
+.reveal .todo, .reveal .callout-box, .reveal .key, .reveal .note {
+  border-radius: 10px; padding: 14px 20px; font-size: 19px; margin: 16px 0 0 0; border-left: 4px solid;
+  p { margin: 0; color: inherit; }
+}
+.reveal .todo, .reveal .callout-box { background: #FFFBEB; border-color: #F59E0B; color: #92400E; }
+.reveal .key { background: #FEF3F2; border-color: $hust-red; color: #912018; }
+.reveal .note { background: $hust-blue-soft; border-color: $hust-blue; color: $hust-blue-dark; }
+
+.reveal .small { font-size: 0.7em; color: $ink-3; }
+.reveal .muted { color: $ink-3; }
+.reveal .refs {
+  position: absolute; bottom: $foot-h + 6px; left: $pad-x; right: $pad-x;
+  font-size: 13px; line-height: 1.4; color: $ink-3; border-top: 1px solid $line; padding-top: 6px;
+  p { color: $ink-3; margin: 0; }
+}
+
+// ---------------------------------------------------------------------------
+// 页脚：透明底灰色小字；进度条细线
+// ---------------------------------------------------------------------------
+.hust-footer {
+  position: fixed; left: 0; right: 0; bottom: 0; height: $foot-h; z-index: 20;
+  display: flex; justify-content: space-between; align-items: center; padding: 0 $pad-x; box-sizing: border-box;
+  font-family: $font-family-sans-serif; font-size: 14px; font-weight: 500; color: $ink-3; pointer-events: none;
+}
+.hust-footer.hidden { display: none; }
+.hust-footer.dark .f-left { color: rgba(255, 255, 255, 0.6); }   // 分节页：左侧在蓝条上
+.hust-footer.dark .f-right { color: $ink-3; }
+.reveal .slides section .hust-footer.inline { position: absolute; }
+.reveal .progress { height: 3px; color: $hust-blue; background: transparent; z-index: 21; }
+
+// ---------------------------------------------------------------------------
+// 封面：图片模式左对齐 + 右侧照片渐隐；无图模式整体居中
+// ---------------------------------------------------------------------------
+.reveal .slides section.hust-cover {
+  padding: 0 !important; box-sizing: border-box; background: $card; text-align: left; overflow: hidden;
+  .cover-brand { position: absolute; top: 64px; left: 8%; display: flex; align-items: center; gap: 22px; }
+  .cover-emblem { height: 92px; }
+  .cover-names { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .cover-name-cn { height: 42px; width: auto; }
+  .cover-name-en { height: 12px; width: auto; }
+  .cover-text { position: absolute; top: 330px; left: 8%; right: 30%; text-align: left !important; * { text-align: left !important; } }
+  .cover-eyebrow { font-size: 18px; font-weight: 700; letter-spacing: 0.1em; color: $hust-blue; margin-bottom: 18px; }
+  h1.title { color: $ink; font-size: 58px; font-weight: 800; line-height: 1.22; letter-spacing: -0.01em; margin: 0 0 30px 0; text-align: left; }
+  .cover-rule { display: flex; margin: 0 0 26px 0; span { width: 44px; height: 5px; } span:first-child { background: $hust-red; } span:last-child { background: $hust-blue; } }
+  .cover-meta { display: flex; flex-wrap: wrap; align-items: center; font-size: 20px; color: $ink-2; text-align: left !important;
+    > div + div::before { content: ""; display: inline-block; width: 1px; height: 18px; background: #CBD5E1; margin: 0 18px; vertical-align: -2px; }
+    .author { color: $ink; font-weight: 700; }
+  }
+  // 图片模式：右侧照片向左渐隐融入白底
+  // 渐隐用白色渐变遮罩（mask-image 在 Chromium 导出 PDF 时不生效）
+  .cover-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; height: 100%; object-fit: cover; max-width: none; max-height: none; }
+  .cover-photo-fade { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; background: linear-gradient(90deg, $card 0%, rgba(255, 255, 255, 0.6) 18%, rgba(255, 255, 255, 0) 42%); }
+  &.has-photo .cover-text { right: 46%; }
+  &.has-photo h1.title { font-size: 50px; }
+  h1.title { text-wrap: balance; }   // 需换行时两行长度均衡，避免末行只剩一两个字
+  .cover-credit { right: 24px; bottom: 16px; }
+  // 无图模式：整体居中，无底纹
+  &.no-photo {
+    .cover-brand { left: 50%; transform: translateX(-50%); top: 190px; }
+    .cover-text { left: 10%; right: 10%; top: 410px; text-align: center !important; * { text-align: center !important; } }
+    .cover-rule, .cover-meta { justify-content: center; }
+  }
+}
+.reveal .photo-credit { position: absolute; z-index: 3; font-size: 12px; color: rgba(255, 255, 255, 0.85); text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5); }
+
+// ---------------------------------------------------------------------------
+// 目录页：纯白编号卡片（浅灰左边线、淡编号）；触碰 / 悬停时左线变华科红、编号变华科蓝
+// ---------------------------------------------------------------------------
+.reveal .hust-toc {
+  list-style: none; margin: 8px 0 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 24px;
+  li {
+    margin: 0; padding: 0; background: $card; border: 1px solid $line; border-left: 4px solid #CBD5E1; border-radius: 14px;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03); transition: all 0.2s ease;
+    &:hover, &:active { border-left-color: $hust-red; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 75, 132, 0.08); }
+    &:hover .num, &:active .num { color: $hust-blue; }
+  }
+  li > a { display: flex; align-items: center; gap: 22px; padding: 22px 26px; text-decoration: none; cursor: pointer; }
+  .num { flex: 0 0 auto; font-size: 40px; font-weight: 800; color: rgba(0, 75, 132, 0.2); letter-spacing: -0.02em; min-width: 56px; }
+  .t { font-size: 24px; font-weight: 600; color: #1E293B; }
+}
+
+// ---------------------------------------------------------------------------
+// 分节页：左 32% 华科蓝窄条（反白校徽、大号编号；图片模式为照片 + 蓝色遮罩）+ 右侧浅底（深色标题 + 本节导览）
+// ---------------------------------------------------------------------------
+$strip-w: 32%;
+.reveal .slides section.slide.level1 {
+  padding: 0 !important; box-sizing: border-box; overflow: hidden; background: $canvas;
+  .sec-strip { position: absolute; left: 0; top: 0; bottom: 0; width: $strip-w; z-index: 1; overflow: hidden;
+    background: linear-gradient(160deg, $hust-blue-dark 0%, $hust-blue 100%); background-size: cover; background-position: center; }
+  // 山水底纹只在蓝条内，自下而上渐隐
+  .sec-pattern { position: absolute; inset: 0; background-size: 520px auto; opacity: 0.12;
+    -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 70%); mask-image: linear-gradient(to top, #000 0%, transparent 70%); }
+  .sec-num { position: absolute; left: 56px; bottom: 110px; z-index: 2;
+    font-size: 190px; font-weight: 800; line-height: 1; color: rgba(255, 255, 255, 0.92); letter-spacing: -0.04em; }
+  &.has-photo .sec-num { text-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
+  .sec-emblem { position: absolute; right: 64px; top: 48px; height: 64px; z-index: 2; }
+  > h1 {
+    position: absolute; left: 38%; right: 6%; top: 190px; margin: 0; z-index: 2;
+    padding-left: 24px; border-left: 6px solid $hust-red;
+    color: $ink; font-size: 50px; font-weight: 800; line-height: 1.25; letter-spacing: -0.01em; text-align: left;
+  }
+  .sec-preview-label { position: absolute; left: 38%; top: 330px; z-index: 2; font-size: 15px; font-weight: 700; letter-spacing: 0.1em; color: $ink-3; }
+  .sec-preview { position: absolute; left: 38%; right: 6%; top: 368px; z-index: 2; list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 14px;
+    li { margin: 0; padding: 0; background: $card; border: 1px solid $line; border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.03); transition: all 0.2s ease;
+      &:hover, &:active { border-color: $hust-blue; transform: translateX(4px); } }
+    li > a { display: flex; align-items: center; gap: 16px; padding: 14px 22px; text-decoration: none; font-size: 22px; font-weight: 600; color: #334155; }
+    .k { color: $hust-blue; font-weight: 800; opacity: 0.35; min-width: 36px; }
+    .st { margin-left: auto; font-size: 14px; font-weight: 600; color: $ink-3; }
+  }
+  // 节内超过 4 页：标题上移、卡片变矮
+  &.sec-dense > h1 { top: 120px; }
+  &.sec-dense .sec-preview-label { top: 245px; }
+  &.sec-dense .sec-preview { top: 280px; gap: 10px; li > a { padding: 11px 22px; font-size: 20px; } }
+  .sec-mountain { position: absolute; right: 64px; bottom: 70px; width: 320px; opacity: 0.06; z-index: 1; pointer-events: none; }
+  img.sec-photo-src { display: none; }
+  .sec-photo-src-credit { left: 0; width: $strip-w; bottom: 46px; padding-right: 20px; box-sizing: border-box; text-align: right; }
+}
+
+// ---------------------------------------------------------------------------
+// 结尾页（## 谢谢 {.end}）：无图为白底居中；图片模式为全屏照片 + 左下渐变 + 白字
+// ---------------------------------------------------------------------------
+.reveal .slides section.slide.level2.end {
+  padding: 0 !important; overflow: hidden; background: $card;
+  > h2 { position: absolute; left: 8%; right: 8%; margin: 0; z-index: 2; border: none; padding: 0;
+    font-size: 72px; font-weight: 800; letter-spacing: 0.02em; line-height: 1.2; }
+  > p { position: absolute; left: 8%; right: 8%; margin: 0; z-index: 2; font-size: 24px; }
+  .end-emblem { position: absolute; z-index: 2; }
+  &.no-photo {
+    > h2 { top: 380px; text-align: center; color: $ink; }
+    > p { top: 490px; text-align: center; color: $ink-2; }
+    .end-emblem { left: 50%; top: 200px; height: 120px; transform: translateX(-50%); }
+    .end-pattern { position: absolute; left: 0; right: 0; bottom: 0; height: 45%; background-size: 560px auto; opacity: 0.08;
+      -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%); mask-image: linear-gradient(to top, #000 0%, transparent 100%); }
+  }
+  &.has-photo {
+    img.end-photo-src { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; max-height: none; object-fit: cover; z-index: 0; }
+    .end-shade { position: absolute; inset: 0; z-index: 1;
+      background: linear-gradient(20deg, rgba(0, 45, 82, 0.88) 0%, rgba(0, 45, 82, 0.45) 40%, rgba(0, 45, 82, 0) 70%); }
+    > h2 { bottom: 200px; color: #fff; text-align: left; }
+    > p { bottom: 140px; color: rgba(255, 255, 255, 0.85); text-align: left; }
+    .end-emblem { left: 8%; top: 64px; height: 84px; }
+    .end-photo-src-credit { right: 24px; bottom: 16px; }
+  }
+  // 右上角链接卡片：二维码 + 标题 + 网址（config 中 hust: end-link / end-qr）
+  .end-link {
+    position: absolute; right: 64px; top: 56px; z-index: 3; width: 210px; box-sizing: border-box;
+    display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 16px 16px 14px;
+    background: rgba(255, 255, 255, 0.94); border: 1px solid $line; border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12); text-decoration: none; text-align: center;
+  }
+  .end-qr { width: 160px; height: 160px; max-height: none; object-fit: contain; margin: 0 0 4px 0; }
+  // 无图模式：分享内容居中放在小字下方（不用卡片），整体上移
+  &.no-photo:has(.end-link) {
+    .end-emblem { top: 110px; height: 104px; }
+    > h2 { top: 250px; }
+    > p { top: 350px; }
+    .end-link { left: 50%; right: auto; top: 420px; transform: translateX(-50%); width: 320px;
+      background: none; border: none; box-shadow: none; padding: 0; gap: 4px; }
+    .end-qr { width: 170px; height: 170px; }
+  }
+  .end-link-label { font-size: 16px; font-weight: 700; color: $hust-blue; letter-spacing: 0.04em; }
+  .end-link-url { font-size: 11px; color: $ink-2; word-break: break-all; line-height: 1.35; }
+}
+
+// ---------------------------------------------------------------------------
+// 触屏翻页按钮：小号、浅色、常驻右下（触屏没有 hover，不能完全隐藏）
+// ---------------------------------------------------------------------------
+.hust-nav {
+  position: fixed; right: 18px; bottom: $foot-h + 6px; z-index: 30;
+  display: flex; gap: 8px; opacity: 0.35; transition: opacity 0.2s;
+  &:hover, &:active, &:focus-within { opacity: 0.95; }
+  button {
+    width: 46px; height: 46px; border-radius: 50%; cursor: pointer; touch-action: manipulation;
+    background: rgba(255, 255, 255, 0.92); color: $hust-blue; border: 1px solid $line;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12); display: flex; align-items: center; justify-content: center;
+    svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+    &.toc { color: $hust-red; }
+  }
+}
+.print-pdf .hust-nav { display: none !important; }
+// PDF：每页右下角页码左侧一组内部跳转链接
+.reveal .pdf-nav { position: absolute; right: 150px; bottom: 6px; display: flex; gap: 8px; z-index: 30;
+  a { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    background: $card; border: 1px solid $line; color: $hust-blue; &.toc { color: $hust-red; } }
+  svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+}
+.reveal section.end.has-photo .pdf-nav a { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); color: #fff; }

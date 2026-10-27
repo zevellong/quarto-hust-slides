@@ -1,0 +1,16 @@
+# 渲染中间文件
+.quarto/
+*_files/
+# 照片原图与压缩版不入库（版权归原作者 / 华中科技大学）：clone 后运行 tools/fetch_photos.sh
+photos/*.jpg
+photos/*.JPG
+!photos/索引.jpg
+# 压缩版只内置默认搭配的 3 张（封面 011、结尾 013、分节可选 022），其余由 fetch_photos.sh 下载
+photos/web/*
+!photos/web/011_*.jpg
+!photos/web/013_*.jpg
+!photos/web/022_*.jpg
+# 预览 HTML 体积大，只保留 PDF 与截图
+preview/*.html
+# 幻灯片目录中由 new_deck / update_ext 写入的本机照片路径
+_extensions/hust/photo-dir

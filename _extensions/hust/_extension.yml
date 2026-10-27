@@ -1,0 +1,30 @@
+title: HUST Slides
+author: quarto-hust-slides
+version: 1.0.0
+quarto-required: ">=1.4.0"
+contributes:
+  formats:
+    revealjs:
+      theme: [default, hust.scss]
+      template-partials:
+        - title-slide.html
+      include-after-body:
+        - hust.html
+      filters:
+        - hust-photos.lua        # 图片模式（hust: photos: true），见 README
+      width: 1600
+      height: 900
+      margin: 0
+      center: false
+      transition: none
+      navigation-mode: linear
+      hash-type: number
+      controls: false
+      menu: false
+      embed-resources: true      # 生成单个自包含 HTML（图片、样式、脚本全部内嵌），可直接发给别人
+      progress: true
+      pdf-max-pages-per-slide: 1   # 导出 PDF 时每张幻灯片只占一页（全屏照片页不会溢出成两页）
+      slide-number: false
+      lang: zh
+      date-format: "YYYY-MM-DD"
+      # 姓名、单位、日期写在幻灯片目录的 config.yml（不写在扩展里，便于分享）
