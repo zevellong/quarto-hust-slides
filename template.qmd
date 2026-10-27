@@ -45,9 +45,10 @@ format: hust-revealjs           # 本次专用样式：format: hust-revealjs: cs
 | 放映 | PDF | Office | 浏览器（也可导出 PDF / PPTX） |
 | 版本管理 | 可用 git | 二进制文件 | 纯文本，git 友好 |
 | 现场改字 | 需重新编译 | 最方便 | 改 qmd 后重新渲染 |
+| 导出 PPTX | 不支持 | 原生 | 整页图片 + 演讲者备注 |
 
 ::: {.note}
-没有绝对的好坏：需要现场大改文字用 PowerPoint；公式极多用 Beamer；经常汇报、想统一风格并交给 AI 助手转换时，用本模板。
+本模板的 PPTX：`pdftoppm` 把 PDF 每页转成高清图片 → `beautifulsoup4` 从 HTML 提取演讲者备注 → `python-pptx` 拼成 16:9 演示文稿。换电脑不跑版，但页面文字不可编辑。现场要大改文字用 PowerPoint；公式极多用 Beamer。
 :::
 
 # 二 版式示例：微生物组物种组成分析
@@ -121,6 +122,32 @@ Shaw & Yu, *Nat Biotechnol* 2024（sylph）；Wood et al., *Genome Biol* 2019（
 :::
 
 # 三 怎么写
+
+## 写 md，让大模型转成 qmd [✅]{.status}
+
+:::: {.columns}
+::: {.column width="46%"}
+```markdown
+# 背景
+## profiling 工具结果不一致
+- 方法：k-mer、标记基因、比对
+- 用模拟群落检验准确度
+- 图：fig/zymo.svg
+
+# 结果
+## Metax 低丰度检出更稳定（进行中）
+- 8 种细菌各 12%，2 种酵母各 2%
+- 待补：假阳性统计
+```
+:::
+::: {.column width="54%" .points}
+- **只写内容**：普通 Markdown 或纯文本大纲
+- **交给大模型**：“按 `_extensions/hust/README.md` 的约定，把 talk.md 转成 slides.qmd”
+- 约定会让它：`#` 变分节页、标题改写成结论、列表进卡片、“待补”进待补框、不编造数字
+- **渲染检查**：PDF 页数 = 幻灯片数；数字与原稿一致
+- 完整提示词见仓库 README
+:::
+::::
 
 ## 三步上手 [✅]{.status}
 

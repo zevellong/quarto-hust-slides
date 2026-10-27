@@ -12,7 +12,7 @@
 
 | 封面 | 目录 | 分节页 | 结尾页 |
 |---|---|---|---|
-| ![封面](preview/page-01.png) | ![目录](preview/page-02.png) | ![分节页](preview/page-03.png) | ![结尾页](preview/page-13.png) |
+| ![封面](preview/page-01.png) | ![目录](preview/page-02.png) | ![分节页](preview/page-03.png) | ![结尾页](preview/page-14.png) |
 
 无图模式（`photos: false`）封面与结尾页居中、白底，体积更小：
 

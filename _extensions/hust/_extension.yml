@@ -25,6 +25,7 @@ contributes:
       progress: true
       pdf-max-pages-per-slide: 1   # 导出 PDF 时每张幻灯片只占一页（全屏照片页不会溢出成两页）
       slide-number: false
+      code-line-numbers: false   # 代码块不显示行号（从 PDF 复制代码时不混入行号）
       lang: zh
       date-format: "YYYY-MM-DD"
       # 姓名、单位、日期写在幻灯片目录的 config.yml（不写在扩展里，便于分享）

@@ -28,7 +28,7 @@ $body-color: $ink;
 $link-color: $hust-blue;
 $presentation-h1-font-size: 2.2em;
 $presentation-h2-font-size: 1.35em;
-$code-block-font-size: 0.6em;
+$code-block-font-size: 0.72em;
 
 /*-- scss:rules --*/
 $pad-x: 64px;
@@ -131,6 +131,14 @@ $foot-h: 40px;
 .reveal table th { background: $hust-blue-soft; color: $hust-blue; font-weight: 700; border-bottom: 2px solid $hust-blue !important; padding: 10px 14px; }
 .reveal table td { color: $ink-2; border-bottom: 1px solid #F1F5F9 !important; padding: 9px 14px; }
 .reveal table tr:last-child td { border-bottom: none !important; }
+
+// 代码块：白底圆角卡片，与要点卡片一致
+.reveal div.sourceCode, .reveal pre.sourceCode, .reveal pre:not(.sourceCode) {
+  background: $card; border: 1px solid $line; border-radius: 12px; box-shadow: $shadow-card; margin: 0 0 16px 0;
+}
+.reveal div.sourceCode, .reveal pre, .reveal pre.sourceCode { overflow: hidden !important; }
+.reveal pre code { padding: 14px 18px !important; line-height: 1.55; background: transparent; max-height: none;
+  overflow: hidden !important; white-space: pre-wrap; overflow-wrap: anywhere; }   // 长行换行，打印时不出现滚动条
 
 // 提示框
 .reveal .todo, .reveal .callout-box, .reveal .key, .reveal .note {
@@ -264,9 +272,9 @@ $strip-w: 32%;
   > p { position: absolute; left: 8%; right: 8%; margin: 0; z-index: 2; font-size: 24px; }
   .end-emblem { position: absolute; z-index: 2; }
   &.no-photo {
-    > h2 { top: 380px; text-align: center; color: $ink; }
-    > p { top: 490px; text-align: center; color: $ink-2; }
-    .end-emblem { left: 50%; top: 200px; height: 120px; transform: translateX(-50%); }
+    > h2 { top: 360px; text-align: center; color: $ink; }
+    > p { top: 470px; text-align: center; color: $ink-2; }
+    .end-emblem { right: 64px; top: 48px; height: 64px; }   // 与分节页一致：彩色校徽在右上
     .end-pattern { position: absolute; left: 0; right: 0; bottom: 0; height: 45%; background-size: 560px auto; opacity: 0.08;
       -webkit-mask-image: linear-gradient(to top, #000 0%, transparent 100%); mask-image: linear-gradient(to top, #000 0%, transparent 100%); }
   }
@@ -276,7 +284,8 @@ $strip-w: 32%;
       background: linear-gradient(20deg, rgba(0, 45, 82, 0.88) 0%, rgba(0, 45, 82, 0.45) 40%, rgba(0, 45, 82, 0) 70%); }
     > h2 { bottom: 200px; color: #fff; text-align: left; }
     > p { bottom: 140px; color: rgba(255, 255, 255, 0.85); text-align: left; }
-    .end-emblem { left: 8%; top: 64px; height: 84px; }
+    .end-emblem { right: 64px; top: 48px; height: 72px; }   // 反白校徽在右上，分享卡片在其下方
+    .end-link { top: 150px; }
     .end-photo-src-credit { right: 24px; bottom: 16px; }
   }
   // 右上角链接卡片：二维码 + 标题 + 网址（config 中 hust: end-link / end-qr）
@@ -289,7 +298,6 @@ $strip-w: 32%;
   .end-qr { width: 160px; height: 160px; max-height: none; object-fit: contain; margin: 0 0 4px 0; }
   // 无图模式：分享内容居中放在小字下方（不用卡片），整体上移
   &.no-photo:has(.end-link) {
-    .end-emblem { top: 110px; height: 104px; }
     > h2 { top: 250px; }
     > p { top: 350px; }
     .end-link { left: 50%; right: auto; top: 420px; transform: translateX(-50%); width: 320px;
