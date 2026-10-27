@@ -14,3 +14,8 @@ photos/web/*
 preview/*.html
 # 幻灯片目录中由 new_deck / update_ext 写入的本机照片路径
 _extensions/hust/photo-dir
+# 编辑器 / R 会话临时文件
+.Rhistory
+.RData
+.Rproj.user/
+.DS_Store
