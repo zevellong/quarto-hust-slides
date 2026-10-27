@@ -1,7 +1,7 @@
 # hust 扩展 · 使用与 md → qmd 转换约定
 
 本文件夹是华科幻灯片模板的样式与素材（由模板 `tools/new_deck.sh` / `tools/update_ext.sh` 复制，**不要手改**；要改请改模板后同步）。
-模板仓库：quarto-hust-slides（完整说明见模板根目录 README.md）。
+模板仓库：quarto-hust-slides（完整说明见模板根目录 README.md；agent 用的完整版约定与示例见 `skills/quarto-hust-slides/`）。
 
 ## 幻灯片目录
 

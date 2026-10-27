@@ -8,7 +8,7 @@
 
 配色、校徽、辅助图形取自华中科技大学视觉形象识别系统；封面和结尾可以放校园风光照片。
 
-**最省事的用法：你只写 Markdown 或纯文本大纲，交给大模型（Claude、ChatGPT、Copilot 等）按约定转成 qmd，再一行命令渲染。**见“[写 md，让大模型转成 qmd](#写-md让大模型转成-qmd推荐)”。
+**最省事的用法：你只写 Markdown 或纯文本大纲，交给大模型（Claude、ChatGPT、Copilot 等）按约定转成 qmd，再一行命令渲染。**见“[写 md，让大模型转成 qmd](#写-md让大模型转成-qmd推荐)”。项目自带 agent skill（`skills/quarto-hust-slides/`），见“[对 AI / agent 友好](#对-ai--agent-友好)”。
 
 | 封面 | 目录 | 分节页 | 结尾页 |
 |---|---|---|---|
@@ -32,6 +32,7 @@
 
 - [三步上手](#三步上手)
 - [写 md，让大模型转成 qmd（推荐）](#写-md让大模型转成-qmd推荐)
+- [对 AI / agent 友好](#对-ai--agent-友好)
 - [幻灯片目录长什么样](#幻灯片目录长什么样)
 - [怎么写：常用写法速查](#怎么写常用写法速查)
 - [个性化](#个性化)
@@ -129,6 +130,28 @@ bash $TPL/tools/render.sh slides.qmd
 ```
 
 检查两点：PDF 页数是否等于幻灯片数（多出来说明某页太满，让大模型精简那一页）；数字和结论是否与原稿一致。不满意就让大模型“把第 5 页改成左图右文”“这一页要点太多拆成两页”，再渲染。
+
+---
+
+## 对 AI / agent 友好
+
+这个模板的设计初衷是：**人只关注内容，排版交给工具和 AI**；同时扩展性强，换校徽、照片、颜色就能变成其他学校或公司的风格。为此整个项目对 agent 友好：
+
+- **一切皆纯文本**：内容（qmd）、配置（`config.yml`）、样式（SCSS）都是文本，agent 能读能改，git 能追踪。
+- **脚本无交互**：`new_deck.sh`、`render.sh` 一条命令完成，输出明确（`Output created`、`PDF … 页`）。
+- **有可自动检查的标准**：PDF 页数 = 幻灯片数；不相等就说明某页溢出。
+- **约定写成文件**：转换规则、版式写法、换皮肤步骤都有文档，不靠口口相传。
+
+**agent skill**：`skills/quarto-hust-slides/` 打包了这些知识，供 Claude Code 等支持 skill 的 agent 使用，也可以直接当说明书读：
+
+| 文件 | 内容 |
+|---|---|
+| `SKILL.md` | 何时使用；四个工作流：新建、md / 纯文本 → qmd、渲染与检查、换皮肤；选项与排错速查 |
+| `references/md2qmd.md` | 完整转换规则 + 输入 / 输出对照示例 |
+| `references/layouts.md` | 全部版式写法与每页容量经验（防溢出） |
+| `references/rebrand.md` | 改成其他学校 / 公司：颜色变量、Logo 与名称、照片、验证清单 |
+
+使用方法：让 agent 先读 `skills/quarto-hust-slides/SKILL.md`（例如“按 quarto-hust-slides 仓库里的 skill，把 talk.md 做成幻灯片”）。需要时也可以把这个目录复制到你所用 agent 的 skills 目录里。
 
 ---
 
@@ -428,6 +451,7 @@ quarto-hust-slides/
 ├── _extensions/hust/      # 扩展：hust.scss（配色 / 版式）、title-slide.html（封面）、hust.html（眉题 / 目录 / 分节导览 /
 │                          #       页脚 / 按钮 / PDF 链接）、hust-photos.lua（照片与分享卡片）、assets/、README.md（md→qmd 约定）
 ├── photos/                # 来源.tsv、索引.jpg、web/ 内置 3 张压缩版；其余原图与压缩版由 fetch_photos.sh 生成
+├── skills/quarto-hust-slides/   # agent skill：SKILL.md + references/（转换约定、版式速查、换皮肤）
 ├── tools/
 │   ├── new_deck.sh        # 新建幻灯片目录
 │   ├── render.sh          # HTML → PDF（自动重试）→ 可选 --pptx
