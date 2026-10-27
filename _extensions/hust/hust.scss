@@ -191,8 +191,13 @@ $foot-h: 40px;
   }
   // 图片模式：右侧照片向左渐隐融入白底
   // 渐隐用白色渐变遮罩（mask-image 在 Chromium 导出 PDF 时不生效）
-  .cover-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; height: 100%; object-fit: cover; max-width: none; max-height: none; }
-  .cover-photo-fade { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; background: linear-gradient(90deg, $card 0%, rgba(255, 255, 255, 0.6) 18%, rgba(255, 255, 255, 0) 42%); }
+  // 缓动（ease-out）多段渐变，过渡区宽，避免几段直线转折处出现竖向亮带
+  .cover-photo { position: absolute; top: 0; right: 0; bottom: 0; width: 56%; height: 100%; object-fit: cover; max-width: none; max-height: none; }
+  // 遮罩比照片向左多伸出 8px 且起始段全白，盖住照片左边缘（PDF 中抗锯齿会漏出一像素竖线）
+  .cover-photo-fade { position: absolute; top: 0; right: 0; bottom: 0; width: calc(56% + 8px);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 1) 1.5%, rgba(255, 255, 255, 0.97) 6%, rgba(255, 255, 255, 0.9) 12%,
+      rgba(255, 255, 255, 0.78) 19%, rgba(255, 255, 255, 0.62) 26%, rgba(255, 255, 255, 0.45) 33%, rgba(255, 255, 255, 0.29) 40%,
+      rgba(255, 255, 255, 0.16) 47%, rgba(255, 255, 255, 0.07) 54%, rgba(255, 255, 255, 0.02) 60%, rgba(255, 255, 255, 0) 66%); }
   &.has-photo .cover-text { right: 46%; }
   &.has-photo h1.title { font-size: 50px; }
   h1.title { text-wrap: balance; }   // 需换行时两行长度均衡，避免末行只剩一两个字
