@@ -341,7 +341,7 @@ format:
 
 | 格式 | 怎么得到 | 特点 |
 |---|---|---|
-| HTML | `render.sh` 或 `quarto render` | 单个自包含文件（默认 `embed-resources: true`），直接发送；触屏按钮、讲者视图 |
+| HTML | `render.sh` 或 `quarto render` | 单个自包含文件（默认 `embed-resources: true`），直接发送；触屏按钮、讲者视图。`render.sh` 会自动瘦身：示例无图模式约 0.75 MB、默认搭配约 1.4 MB |
 | PDF | `render.sh`（自动导出、页数不对自动重试） | 每页右下角翻页图标；目录、“本节内容”卡片可点击；每张幻灯片限定一页 |
 | PPTX | `render.sh --pptx` | 每页为整页高清图片（宽 2560 px），排版不跑版；**文字不可编辑**、跳转链接不保留；`::: {.notes}` 写入备注栏 |
 
@@ -383,6 +383,7 @@ quarto render slides.qmd       # 生成 slides.html
 | 字体和截图不一样 | 本机没装鸿蒙黑体时会依次换用苹方 / 思源黑体 / 微软雅黑，属正常 |
 | `quarto: command not found` | Quarto 不在 PATH；装在 conda 环境时设 `QUARTO_ENV=环境名` |
 | 找不到 Chromium | 设 `CHROME=/path/to/chrome` |
+| HTML 太大 | 用 `render.sh` 渲染：Quarto 默认会内嵌本模板用不到的 Source Sans Pro 字体（约 3 MB），`render.sh` 渲染后自动删掉；直接 `quarto render` 的文件会大约 3 MB。还想更小：`photos: false`（无图模式），线条图存 SVG、照片先压缩 |
 
 ---
 

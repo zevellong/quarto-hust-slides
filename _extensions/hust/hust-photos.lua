@@ -140,6 +140,7 @@ function Pandoc(doc)
   add_end_link(doc, cfg)
   local on = cfg.photos   -- 不写即开启（默认图片模式）
   if on == false or (on ~= nil and on ~= true and str(on):lower() == 'false') then return doc end
+  doc.meta['hust-photos'] = true   -- 封面模板据此才内嵌反白校徽（仅图片模式结尾页用）
 
   local dir = photo_dir(cfg)
   if not dir then quarto.log.warning('[hust] 图片模式已开启，但找不到照片目录（photos/web；运行 tools/fetch_photos.sh 下载）'); return doc end
@@ -158,7 +159,7 @@ function Pandoc(doc)
     if p.credit ~= '' then doc.meta['hust-cover-credit'] = pandoc.MetaString(p.credit) end
   end
 
-  local out = {}
+  local out, seen, nseen = {}, {}, 0
   for _, b in ipairs(doc.blocks) do
     table.insert(out, b)
     if b.t == 'Header' and b.level == 1 then
@@ -167,7 +168,17 @@ function Pandoc(doc)
       if own then
         local f = picker(own, nil, idx, all_ids, order); p = f and f()
       elseif section then p = section() end
-      if p then table.insert(out, pandoc.RawBlock('html', img_html('sec-photo-src', p))) end
+      if p then
+        -- 同一张照片只内嵌一次：首次放图并编号，之后的分节页只放引用（脚本按引用取图）
+        local ref = seen[p.path]
+        if ref then
+          table.insert(out, pandoc.RawBlock('html', '<span class="sec-photo-ref" data-ref="' .. ref .. '" hidden></span>'
+            .. ((p.credit ~= '') and ('<div class="photo-credit sec-photo-src-credit">摄影：' .. p.credit .. '</div>') or '')))
+        else
+          nseen = nseen + 1; seen[p.path] = 'sp' .. nseen
+          table.insert(out, pandoc.RawBlock('html', (img_html('sec-photo-src', p):gsub('<img ', '<img data-photo-id="sp' .. nseen .. '" ', 1))))
+        end
+      end
     elseif b.t == 'Header' and b.level == 2 and b.classes:includes('end') and ending then
       table.insert(out, pandoc.RawBlock('html', img_html('end-photo-src', ending())))
     end

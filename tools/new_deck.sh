@@ -15,7 +15,7 @@ else
 fi
 [ -e "$DEST/config.yml" ] && echo "已存在 $DEST/config.yml，未覆盖" || cp "$TPL/config.yml" "$DEST/"
 # 示例图与结尾分享二维码（fig/share_enable.png 指向模板仓库；不需要就删掉它并注释 config.yml 的 end-link）
-cp -n "$TPL"/fig/* "$DEST/fig/" 2>/dev/null || true
+for f in "$TPL"/fig/*; do case "$f" in *.py) ;; *) cp -n "$f" "$DEST/fig/" ;; esac; done   # 不复制画图脚本
 [ -e "$DEST/$NAME.qmd" ] && echo "已存在 $DEST/$NAME.qmd，未覆盖" || cp "$TPL/template.qmd" "$DEST/$NAME.qmd"
 echo "完成。改 $DEST/config.yml 中的姓名 / 单位，然后："
 echo "  bash $TPL/tools/render.sh $DEST/$NAME.qmd [--pptx]"

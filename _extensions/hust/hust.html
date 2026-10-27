@@ -21,7 +21,7 @@
 
     // assets: taken from the hidden <img> list on the cover, so they work when embedded as data URIs
     function asset(k, file) {
-      var im = document.querySelector('.hust-assets img[data-k="' + k + '"]');
+      var im = document.querySelector('.reveal img[data-k="' + k + '"]');   // 素材登记或封面上带 data-k 的图（每张只内嵌一次）
       return (im && im.getAttribute('src')) || A + file;
     }
     function bg(el, k, file) { el.style.backgroundImage = 'url("' + asset(k, file) + '")'; }
@@ -79,7 +79,8 @@
     sections.forEach(function (s, i) {
       var el = s.el, h = el.querySelector('h1'); if (h) h.textContent = s.title;
       var strip = document.createElement('div'); strip.className = 'sec-strip';
-      var ph = el.querySelector('img.sec-photo-src');
+      var ph = el.querySelector('img.sec-photo-src'), ref = el.querySelector('.sec-photo-ref');
+      if (!ph && ref) ph = document.querySelector('img[data-photo-id="' + ref.getAttribute('data-ref') + '"]');   // 重复照片只内嵌一次
       if (ph) {
         el.classList.add('has-photo');
         strip.style.backgroundImage = 'linear-gradient(180deg, rgba(0,45,82,0.55) 0%, rgba(0,45,82,0.25) 40%, rgba(0,45,82,0.82) 100%), url("' + ph.getAttribute('src') + '")';

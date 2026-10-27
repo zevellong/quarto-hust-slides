@@ -19,6 +19,20 @@ PY="${PPTX_PYTHON:-}"
 cd "$(dirname "$QMD")"
 BASE="$(basename "$QMD" .qmd)"
 "${QUARTO[@]}" render "$BASE.qmd" 2>&1 | grep -E "Output created|WARN|ERROR|Error" || true
+# 瘦身：Quarto revealjs 的主题 CSS 开头内联了 Source Sans Pro 字体（约 3 MB），本模板不用它；
+# 只删掉主题 CSS 里这几段 @font-face，其余样式原样保留
+python3 - "$BASE.html" <<'PY'
+import re, sys
+from urllib.parse import quote, unquote
+f = sys.argv[1]; s = open(f, encoding="utf-8").read(); n0 = len(s.encode())
+def slim(m):
+    css = unquote(m.group(2))
+    css2 = re.sub(r"@font-face\s*\{[^}]*Source Sans Pro[^}]*\}", "", css)
+    return m.group(1) + (quote(css2, safe="") if css2 != css else m.group(2)) + m.group(3)
+s = re.sub(r'(href="data:text/css,)([^"]*)(")', slim, s)
+open(f, "w", encoding="utf-8").write(s)
+print(f"HTML 瘦身：{n0 / 1e6:.1f} MB → {len(s.encode()) / 1e6:.1f} MB")
+PY
 [ "$PDF" = 1 ] || exit 0
 [ -n "${CHROME:-}" ] || { echo "未找到 Chromium / Chrome，无法导出 PDF（可设 CHROME=浏览器路径）" >&2; exit 1; }
 ok=0
