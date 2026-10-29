@@ -23,5 +23,7 @@ SOFTWARE.
 ---
 本许可仅适用于代码（Lua、SCSS、HTML 模板、脚本）。
 _extensions/hust/assets/ 中的校徽、校名、辅助图形版权归华中科技大学所有（来源 https://vi.hust.edu.cn/），
-校园照片版权归原作者 / 华中科技大学所有（来源 https://www.hust.edu.cn/zjhkd/xyfg/qb.htm，仓库不附带），
+校园照片版权归原作者 / 华中科技大学所有（来源 https://www.hust.edu.cn/zjhkd/xyfg/qb.htm）；
+仓库内置 3 张压缩版（011、013、022）与缩略图索引 photos/索引.jpg，仅用于模板默认搭配演示，其余照片不随仓库分发，
+由 tools/fetch_photos.sh 从原地址下载；
 仅限校内学术交流使用，须遵守学校视觉形象识别系统规范。
