@@ -165,8 +165,8 @@
       // PDF：每页右下角一组原生内部链接
       var tocT = tocSlide || allSlides[Math.min(1, total - 1)];
       allSlides.forEach(function (s, i) {
-        if (s.classList.contains('hust-cover')) return;
-        var nav = document.createElement('div'); nav.className = 'pdf-nav';
+        // 封面也放翻页链接（深色半透明，压在照片上仍清楚）
+        var nav = document.createElement('div'); nav.className = 'pdf-nav' + (s.classList.contains('hust-cover') ? ' on-photo' : '');
         [['first', allSlides[0]], ['prev', allSlides[Math.max(0, i - 1)]], ['toc', tocT], ['next', allSlides[Math.min(total - 1, i + 1)]]]
           .forEach(function (b) { var a = link(b[1], b[0]); a.innerHTML = icon[b[0]]; nav.appendChild(a); });
         s.appendChild(nav);
@@ -184,6 +184,12 @@
         nav.appendChild(btn);
       });
       document.body.appendChild(nav);
+      // 封面 / 照片结尾页：按钮改为深色半透明并提高不透明度，否则白色按钮在照片上几乎看不见
+      var navMode = function () {
+        var s = Reveal.getCurrentSlide();
+        nav.classList.toggle('on-photo', !!s && (s.classList.contains('hust-cover') || (s.classList.contains('end') && s.classList.contains('has-photo'))));
+      };
+      Reveal.on('slidechanged', navMode); navMode();
     }
     Reveal.layout();
   });

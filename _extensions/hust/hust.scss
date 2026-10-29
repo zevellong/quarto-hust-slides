@@ -328,6 +328,11 @@ $strip-w: 32%;
     &.toc { color: $hust-red; }
   }
 }
+// 封面 / 照片结尾页：深色半透明按钮，常驻较高不透明度（触屏不支持滑动时仍能找到翻页）
+.hust-nav.on-photo {
+  opacity: 0.9;
+  button { background: rgba(0, 45, 82, 0.55); color: #fff; border-color: rgba(255, 255, 255, 0.45); &.toc { color: #fff; } }
+}
 .print-pdf .hust-nav { display: none !important; }
 // PDF：每页右下角页码左侧一组内部跳转链接
 .reveal .pdf-nav { position: absolute; right: 150px; bottom: 6px; display: flex; gap: 8px; z-index: 30;
@@ -335,4 +340,7 @@ $strip-w: 32%;
     background: $card; border: 1px solid $line; color: $hust-blue; &.toc { color: $hust-red; } }
   svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 }
+.reveal .pdf-nav.on-photo { bottom: 24px; right: 24px;
+  a { width: 36px; height: 36px; background: rgba(0, 45, 82, 0.55); border-color: rgba(255, 255, 255, 0.45); color: #fff; &.toc { color: #fff; } }
+  svg { width: 18px; height: 18px; } }
 .reveal section.end.has-photo .pdf-nav a { background: rgba(255, 255, 255, 0.15); border-color: rgba(255, 255, 255, 0.3); color: #fff; }

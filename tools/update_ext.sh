@@ -9,5 +9,6 @@ DEST="${1:?用法: update_ext.sh <幻灯片目录>}"
 mkdir -p "$DEST/_extensions"
 rm -rf "${DEST:?}/_extensions/hust"
 cp -r "$TPL/_extensions/hust" "$DEST/_extensions/"
+chmod -R u+w "$DEST/_extensions/hust"   # 模板目录可能是只读（同步盘权限），复制品须可写，否则下一行与后续更新会失败
 echo "$TPL/photos/web" > "$DEST/_extensions/hust/photo-dir"   # 图片模式从模板读照片
 echo "已更新 $DEST/_extensions/hust"
