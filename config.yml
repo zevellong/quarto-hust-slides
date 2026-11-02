@@ -11,9 +11,13 @@ institute: "华中科技大学"
 date: today                # today = 渲染当天；答辩等固定日期请在 qmd 头部写 date: 2026-11-05
 date-format: "YYYY-MM-DD"
 
-# ---- 照片（编号见模板 photos/索引.jpg）----
 hust:
-  photos: true             # true = 图片模式（默认）；false = 无图模式（封面山水底纹、白底结尾页）
+  # ---- 输出格式（tools/render.sh 读取；可多选：html / pdf / pptx）----
+  output: [html]           # 例：[html, pdf]、[html, pdf, pptx]；命令行 --format html,pdf 优先
+                           # PDF 由 HTML 导出，PPTX 由 PDF 拼成；清单里没写的中间文件渲染后删除
+
+  # ---- 照片（编号见模板 photos/索引.jpg）----
+  photos: true            # true = 图片模式（默认）；false = 无图模式（封面山水底纹、白底结尾页）
   cover-photo: 11          # 封面右侧：011 南大门鸟瞰
   section-photo: none      # 分节页左侧窄条：none = 华科蓝窄条（默认，更庄重）；竖幅 22 校大门秋最合适
   end-photo: 13            # 结尾页（## 谢谢 {.end}）：013 喻家湖上红嘴鸥

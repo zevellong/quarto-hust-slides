@@ -15,7 +15,7 @@ doc/
 └── slides.html / slides.pdf / slides.pptx   # 生成物
 ```
 
-渲染：`bash <模板>/tools/render.sh doc/slides.qmd [--pptx]`
+渲染：`bash <模板>/tools/render.sh doc/slides.qmd [--format html,pdf,pptx]`（默认按 config.yml 的 `hust: output:`，未写为 `[html]`）
 
 ## md → qmd 转换约定（给 agent）
 

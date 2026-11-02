@@ -43,10 +43,10 @@ Read **`references/md2qmd.md`** before converting; use **`references/layouts.md`
 ## Workflow 3 — Render and verify
 
 ```bash
-bash "$TPL/tools/render.sh" <deck_dir>/slides.qmd [--pptx] [--no-pdf]
+bash "$TPL/tools/render.sh" <deck_dir>/slides.qmd --format html,pdf      # add ,pptx when the user wants PPTX
 ```
 
-`render.sh` renders HTML, strips an unused 3 MB font, exports PDF with Chromium (auto-retry) and optionally PPTX. Always verify:
+`render.sh` renders HTML, strips an unused 3 MB font, exports PDF with Chromium (auto-retry) and optionally PPTX. Output formats come from `hust: output:` in config.yml (default `[html]`; the qmd header overrides it; `--format` overrides both). Pass `--format html,pdf` when verifying, because the checks below need the PDF. Always verify:
 
 - **PDF pages == number of slides** (cover + toc + sections + content + end). More pages ⇒ a slide overflows → shorten bullets, split the slide, or reduce image height. Count with `pdfinfo slides.pdf | grep Pages`.
 - Look at the pages (`pdftoppm -png -r 50 slides.pdf /tmp/p`) — check overflow, image distortion, empty slides.

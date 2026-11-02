@@ -18,4 +18,4 @@ fi
 for f in "$TPL"/fig/*; do case "$f" in *.py) ;; *) cp -n "$f" "$DEST/fig/" ;; esac; done   # 不复制画图脚本
 [ -e "$DEST/$NAME.qmd" ] && echo "已存在 $DEST/$NAME.qmd，未覆盖" || cp "$TPL/template.qmd" "$DEST/$NAME.qmd"
 echo "完成。改 $DEST/config.yml 中的姓名 / 单位，然后："
-echo "  bash $TPL/tools/render.sh $DEST/$NAME.qmd [--pptx]"
+echo "  bash $TPL/tools/render.sh $DEST/$NAME.qmd [--format html,pdf,pptx]   # 默认按 config.yml 的 output"

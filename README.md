@@ -77,10 +77,11 @@ bash $TPL/tools/new_deck.sh ~/proj_x/doc slides
 ### 3. 渲染
 
 ```bash
-bash $TPL/tools/render.sh ~/proj_x/doc/slides.qmd --pptx
+bash $TPL/tools/render.sh ~/proj_x/doc/slides.qmd                         # 按 config.yml 的 output（默认只出 HTML）
+bash $TPL/tools/render.sh ~/proj_x/doc/slides.qmd --format html,pdf,pptx   # 临时指定，命令行优先
 ```
 
-终端看到 `Output created: slides.html`、`PDF 第 1 次导出：12 页`、`已生成 slides.pptx` 即完成。浏览器打开 `slides.html` 就能放映。之后改 `slides.qmd` → 再跑这一行。
+输出格式写在 `config.yml` 的 `hust: output:`，默认 `[html]`，可多选 `[html, pdf, pptx]`（qmd 头部也可写，优先于 config.yml）。终端看到 `Output created: slides.html`（以及 `PDF 第 1 次导出：12 页`、`已生成 slides.pptx`）即完成。浏览器打开 `slides.html` 就能放映。之后改 `slides.qmd` → 再跑这一行。
 
 > 报错时先读终端输出，Quarto 的错误信息一般足够明确；常见问题见[下文](#常见问题)。
 
@@ -126,7 +127,7 @@ bash $TPL/tools/render.sh ~/proj_x/doc/slides.qmd --pptx
 **3. 渲染并检查**
 
 ```bash
-bash $TPL/tools/render.sh slides.qmd
+bash $TPL/tools/render.sh slides.qmd --format html,pdf
 ```
 
 检查两点：PDF 页数是否等于幻灯片数（多出来说明某页太满，让大模型精简那一页）；数字和结论是否与原稿一致。不满意就让大模型“把第 5 页改成左图右文”“这一页要点太多拆成两页”，再渲染。
@@ -220,6 +221,25 @@ format: hust-revealjs
 - 标题写结论，要点写证据
 :::
 ```
+
+**行内胶囊标签**（短关键词、分类、方法名；一页不超过 3–4 个）
+
+```markdown
+本研究比较 [方法 A]{.pill-blue} 与 [方法 B]{.pill-amber}，结果 [显著]{.pill-green}，[待复核]{.pill-red}
+```
+
+**选项卡**（同一页切换几组图或代码；PDF 中只显示第一个选项卡）
+
+```markdown
+::: {.panel-tabset}
+### 图 A
+![](fig/a.png){height="480"}
+### 图 B
+![](fig/b.png){height="480"}
+:::
+```
+
+**代码块**：长行自动换行；超过约 18 行时在卡片内滚动（最大高 520 px）。PDF 不能滚动，超出部分会被截掉，长代码请拆页。
 
 **左图右文**（方图、树图）
 
@@ -364,9 +384,9 @@ format:
 
 | 格式 | 怎么得到 | 特点 |
 |---|---|---|
-| HTML | `render.sh` 或 `quarto render` | 单个自包含文件（默认 `embed-resources: true`），直接发送；触屏按钮、讲者视图。`render.sh` 会自动瘦身：示例无图模式约 0.75 MB、默认搭配约 1.4 MB |
-| PDF | `render.sh`（自动导出、页数不对自动重试） | 每页右下角翻页图标；目录、“本节内容”卡片可点击；每张幻灯片限定一页 |
-| PPTX | `render.sh --pptx` | 每页为整页高清图片（宽 2560 px），排版不跑版；**文字不可编辑**、跳转链接不保留；`::: {.notes}` 写入备注栏 |
+| HTML | `render.sh`（默认输出）或 `quarto render` | 单个自包含文件（默认 `embed-resources: true`），直接发送；触屏按钮、讲者视图。`render.sh` 会自动瘦身：示例无图模式约 0.75 MB、默认搭配约 1.4 MB |
+| PDF | `output: [html, pdf]` 或 `render.sh --format html,pdf`（自动导出、页数不对自动重试） | 每页右下角翻页图标；目录、“本节内容”卡片可点击；每张幻灯片限定一页 |
+| PPTX | `output` 加上 `pptx`，或 `render.sh --pptx` | 每页为整页高清图片（宽 2560 px），排版不跑版；**文字不可编辑**、跳转链接不保留；`::: {.notes}` 写入备注栏 |
 
 **放映快捷键**（HTML）：`→` / `←` 或空格翻页；`s` 讲者视图（当前页、下一页、计时、备注，会在新窗口打开，把主窗口拖到投影屏）；`f` 全屏；`o` 或 `Esc` 总览（所有页缩略图）。触屏时用右下角四个半透明按钮：首页、上一页、目录（红）、下一页。
 
@@ -454,7 +474,7 @@ quarto-hust-slides/
 ├── skills/quarto-hust-slides/   # agent skill：SKILL.md + references/（转换约定、版式速查、换皮肤）
 ├── tools/
 │   ├── new_deck.sh        # 新建幻灯片目录
-│   ├── render.sh          # HTML → PDF（自动重试）→ 可选 --pptx
+│   ├── render.sh          # 按 config.yml 的 output 输出 HTML / PDF（自动重试）/ PPTX
 │   ├── make_pptx.py       # PDF → PPTX（整页图片 + 备注）
 │   ├── update_ext.sh      # 模板改动同步到已有幻灯片（只替换 _extensions/hust）
 │   ├── fetch_photos.sh    # 下载照片原图并生成 web/
